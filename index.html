@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+
+  <title>Abel Conecta | Escola Estadual Professor Abel Freire Coelho</title>
+  <meta name="description" content="Abel Conecta: o aplicativo escolar da Escola Estadual Professor Abel Freire Coelho. Avisos, horários e informações em um só lugar, com funcionamento offline.">
+  <meta name="author" content="Cristian Davi Santos de Freitas">
+
+  <!-- Caminhos relativos: funcionam na raiz ou em subdiretório do GitHub Pages. -->
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="./assets/icons/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="./assets/icons/apple-touch-icon.png">
+  <link rel="preload" as="image" href="./assets/logo-abel.png" fetchpriority="high">
+  <link rel="stylesheet" href="./style.css">
+
+  <meta name="theme-color" content="#0d3b66">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Abel Conecta">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Abel Conecta">
+  <meta property="og:description" content="Avisos, horários e informações da Escola Estadual Professor Abel Freire Coelho.">
+  <meta property="og:image" content="./assets/logo-abel.png">
+
+  <!-- Aplica o tema antes da pintura para evitar "flash" de cor. -->
+  <script>
+    (function () {
+      var saved = null;
+      var systemDark = false;
+
+      try {
+        saved = localStorage.getItem('abel-conecta-theme');
+      } catch (error) {
+        /* Armazenamento bloqueado: segue a preferência do sistema. */
+      }
+
+      try {
+        systemDark = Boolean(
+          window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        );
+      } catch (error) {
+        systemDark = false;
+      }
+
+      document.documentElement.dataset.theme =
+        saved === 'dark' || saved === 'light' ? saved : (systemDark ? 'dark' : 'light');
+    })();
+  </script>
+</head>
+
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="#/inicio">
+        <span class="brand__mark">
+          <img src="./assets/logo-abel.png" alt="" width="44" height="44" decoding="async">
+        </span>
+        <span class="brand__text">
+          <strong>Abel Conecta</strong>
+          <span>Escola Estadual</span>
+        </span>
+      </a>
+
+      <div class="topbar__actions">
+        <span class="connection-pill" id="connection-status" role="status" hidden>
+          <span class="connection-pill__dot" aria-hidden="true"></span>
+          <span class="connection-pill__label">Offline</span>
+        </span>
+
+        <button class="icon-button" id="theme-toggle" type="button" aria-label="Ativar tema escuro" aria-pressed="false" title="Alternar tema">
+          <svg class="icon icon--sun" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"></path>
+          </svg>
+          <svg class="icon icon--moon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8Z"></path>
+          </svg>
+        </button>
+
+        <button class="install-button" id="install-button" type="button" title="Instalar aplicativo" aria-label="Instalar aplicativo">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v12"></path>
+            <path d="m7.5 10.5 4.5 4.5 4.5-4.5"></path>
+            <path d="M5 20h14"></path>
+          </svg>
+          <span>Instalar</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main" id="conteudo" tabindex="-1">
+    <!-- ============================= INÍCIO ============================= -->
+    <section class="view" id="view-inicio" data-view="inicio" aria-labelledby="titulo-inicio">
+      <div class="hero">
+        <div class="hero__decor" aria-hidden="true"></div>
+
+        <div class="hero__logo">
+          <span class="hero__logo-ring">
+            <img src="./assets/logo-abel.png" alt="Emblema da Escola Estadual Professor Abel Freire Coelho" width="220" height="220" fetchpriority="high">
+          </span>
+        </div>
+
+        <div class="hero__content">
+          <p class="eyebrow eyebrow--light">Escola Estadual</p>
+          <h1 id="titulo-inicio" tabindex="-1">Professor Abel<span>Freire Coelho</span></h1>
+          <p class="hero__welcome">
+            Boas-vindas ao <strong>Abel Conecta</strong>! Um espaço para acompanhar
+            avisos, consultar horários e conhecer o projeto da nossa escola.
+          </p>
+
+          <div class="hero__chips" role="group" aria-label="Recursos do aplicativo">
+            <span class="chip chip--light">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"></path><path d="m7.5 10.5 4.5 4.5 4.5-4.5"></path><path d="M5 20h14"></path></svg>
+              Instalável
+            </span>
+            <span class="chip chip--light">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5a10 10 0 0 1 14 0"></path><path d="M8.5 16a5 5 0 0 1 7 0"></path><path d="M12 19.5h.01"></path><path d="M2 9a14 14 0 0 1 20 0"></path></svg>
+              Funciona offline
+            </span>
+          </div>
+
+          <div class="hero__actions">
+            <a class="button button--gold" href="#/avisos">
+              Ver avisos
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+            </a>
+            <a class="button button--outline" href="#/horarios">Consultar horários</a>
+          </div>
+        </div>
+      </div>
+
+      <section class="home-section" aria-labelledby="atalhos-titulo">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Navegação rápida</p>
+            <h2 id="atalhos-titulo">O que você procura?</h2>
+          </div>
+          <p class="section-head__hint">Toque em um cartão para começar.</p>
+        </div>
+
+        <div class="card-grid">
+          <a class="nav-card nav-card--blue" href="#/inicio">
+            <span class="nav-card__icon" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M9.5 21v-6h5v6"></path></svg>
+            </span>
+            <span class="nav-card__body">
+              <strong>Início</strong>
+              <span>A tela principal do Abel Conecta.</span>
+            </span>
+            <span class="nav-card__arrow" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+            </span>
+          </a>
+
+          <a class="nav-card nav-card--gold" href="#/avisos">
+            <span class="nav-card__icon" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg>
+            </span>
+            <span class="nav-card__body">
+              <strong>Avisos</strong>
+              <span>Comunicados e novidades da escola.</span>
+            </span>
+            <span class="nav-card__arrow" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+            </span>
+          </a>
+
+          <a class="nav-card nav-card--teal" href="#/horarios">
+            <span class="nav-card__icon" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path><path d="M8 15h2M14 15h2M8 18h2M14 18h2"></path></svg>
+            </span>
+            <span class="nav-card__body">
+              <strong>Horários</strong>
+              <span>Veja a rotina de aulas da semana.</span>
+            </span>
+            <span class="nav-card__arrow" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+            </span>
+          </a>
+
+          <a class="nav-card nav-card--navy" href="#/sobre">
+            <span class="nav-card__icon" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5"></path><path d="M12 8h.01"></path></svg>
+            </span>
+            <span class="nav-card__body">
+              <strong>Sobre</strong>
+              <span>Conheça o projeto e o desenvolvedor.</span>
+            </span>
+            <span class="nav-card__arrow" aria-hidden="true">
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
+            </span>
+          </a>
+        </div>
+      </section>
+
+      <div class="feature-strip" role="group" aria-label="Destaques do aplicativo">
+        <div class="feature-strip__item">
+          <span class="feature-strip__icon" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"></rect><path d="M11 18.5h2"></path></svg>
+          </span>
+          <span><strong>Feito para o celular</strong><small>Interface de aplicativo, responsiva em qualquer tela.</small></span>
+        </div>
+        <div class="feature-strip__item">
+          <span class="feature-strip__icon" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10"></path><path d="m8 9 4 4 4-4"></path><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"></path></svg>
+          </span>
+          <span><strong>Adicione à tela inicial</strong><small>Instale e abra com um toque, como um app.</small></span>
+        </div>
+        <div class="feature-strip__item">
+          <span class="feature-strip__icon" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 .5-8.97A7 7 0 0 0 5.1 11.2 4 4 0 0 0 6 19h11.5Z"></path><path d="M9 15h6"></path></svg>
+          </span>
+          <span><strong>Conteúdo offline</strong><small>Os arquivos essenciais ficam salvos no aparelho.</small></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= AVISOS ============================= -->
+    <section class="view" id="view-avisos" data-view="avisos" aria-labelledby="titulo-avisos" hidden>
+      <header class="page-head">
+        <p class="eyebrow"><span class="eyebrow__mark" aria-hidden="true"></span> Mural da escola</p>
+        <h1 id="titulo-avisos" tabindex="-1">Avisos</h1>
+        <p>Comunicados e novidades em um só lugar. Os cartões abaixo são modelos de demonstração.</p>
+      </header>
+
+      <div class="callout callout--demo" role="note">
+        <span class="callout__icon" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.5 20h19L12 3Z"></path><path d="M12 9v5"></path><path d="M12 17h.01"></path></svg>
+        </span>
+        <div>
+          <strong>Conteúdo demonstrativo</strong>
+          <p>Todos os avisos desta seção são <strong>exemplos</strong> criados para mostrar o layout. Nenhum deles é um comunicado oficial da escola.</p>
+        </div>
+      </div>
+
+      <div class="notice-list">
+        <article class="notice">
+          <div class="notice__meta">
+            <span class="tag tag--example">Exemplo</span>
+            <span class="notice__date">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg>
+              Data ilustrativa
+            </span>
+          </div>
+          <h2>Reunião de pais e responsáveis</h2>
+          <p>Este é um modelo de aviso. A escola poderá usar este espaço para divulgar datas de reuniões, orientações e outros recados importantes para as famílias.</p>
+          <div class="notice__footer">
+            <span class="tag tag--soft">Comunicado-modelo</span>
+            <span class="notice__hint">Texto de demonstração</span>
+          </div>
+        </article>
+
+        <article class="notice">
+          <div class="notice__meta">
+            <span class="tag tag--example">Exemplo</span>
+            <span class="notice__date">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg>
+              Data ilustrativa
+            </span>
+          </div>
+          <h2>Semana de avaliações</h2>
+          <p>Exemplo de comunicado sobre o calendário de avaliações. As datas, turmas e conteúdos oficiais devem ser confirmados diretamente com a escola.</p>
+          <div class="notice__footer">
+            <span class="tag tag--soft">Comunicado-modelo</span>
+            <span class="notice__hint">Texto de demonstração</span>
+          </div>
+        </article>
+
+        <article class="notice">
+          <div class="notice__meta">
+            <span class="tag tag--example">Exemplo</span>
+            <span class="notice__date">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg>
+              Data ilustrativa
+            </span>
+          </div>
+          <h2>Projeto de leitura</h2>
+          <p>Modelo de aviso para divulgar projetos, oficinas e atividades extracurriculares. Substitua este texto por informações verificadas antes de publicar.</p>
+          <div class="notice__footer">
+            <span class="tag tag--soft">Comunicado-modelo</span>
+            <span class="notice__hint">Texto de demonstração</span>
+          </div>
+        </article>
+      </div>
+
+      <p class="fineprint">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5"></path><path d="M12 8h.01"></path></svg>
+        A publicação de avisos oficiais é responsabilidade da escola. Esta aplicação é um projeto demonstrativo.
+      </p>
+    </section>
+
+    <!-- ============================= HORÁRIOS ============================= -->
+    <section class="view" id="view-horarios" data-view="horarios" aria-labelledby="titulo-horarios" hidden>
+      <header class="page-head">
+        <p class="eyebrow"><span class="eyebrow__mark" aria-hidden="true"></span> Rotina de aulas</p>
+        <h1 id="titulo-horarios" tabindex="-1">Horários</h1>
+        <p>Uma prévia de como os horários podem ser organizados por dia da semana.</p>
+      </header>
+
+      <div class="callout callout--demo" role="note">
+        <span class="callout__icon" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2.5 20h19L12 3Z"></path><path d="M12 9v5"></path><path d="M12 17h.01"></path></svg>
+        </span>
+        <div>
+          <strong>Horários ilustrativos</strong>
+          <p>Os dias, componentes e aulas abaixo são <strong>exemplos de layout</strong>. Nenhum horário oficial foi fornecido. Confirme o horário real com a escola.</p>
+        </div>
+      </div>
+
+      <div class="schedule-card">
+        <div class="schedule-toolbar">
+          <div class="day-tabs" role="tablist" aria-label="Dias da semana">
+            <button class="day-tab" id="tab-segunda" type="button" role="tab" aria-selected="true" aria-controls="panel-segunda" tabindex="0">Segunda</button>
+            <button class="day-tab" id="tab-terca" type="button" role="tab" aria-selected="false" aria-controls="panel-terca" tabindex="-1">Terça</button>
+            <button class="day-tab" id="tab-quarta" type="button" role="tab" aria-selected="false" aria-controls="panel-quarta" tabindex="-1">Quarta</button>
+            <button class="day-tab" id="tab-quinta" type="button" role="tab" aria-selected="false" aria-controls="panel-quinta" tabindex="-1">Quinta</button>
+            <button class="day-tab" id="tab-sexta" type="button" role="tab" aria-selected="false" aria-controls="panel-sexta" tabindex="-1">Sexta</button>
+          </div>
+          <span class="schedule-toolbar__badge">Exemplo</span>
+        </div>
+
+        <div class="schedule-panels">
+          <div class="schedule-panel" id="panel-segunda" role="tabpanel" aria-labelledby="tab-segunda" tabindex="0">
+            <table class="schedule-table">
+              <caption>Horário ilustrativo de segunda-feira</caption>
+              <thead>
+                <tr><th scope="col">Aula</th><th scope="col">Componente curricular</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row"><span class="period">1ª</span></th><td>Língua Portuguesa</td></tr>
+                <tr><th scope="row"><span class="period">2ª</span></th><td>Matemática</td></tr>
+                <tr><th scope="row"><span class="period">3ª</span></th><td>História</td></tr>
+                <tr class="schedule-break"><th scope="row">Intervalo</th><td>Pausa — horário ilustrativo</td></tr>
+                <tr><th scope="row"><span class="period">4ª</span></th><td>Geografia</td></tr>
+                <tr><th scope="row"><span class="period">5ª</span></th><td>Língua Inglesa</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="schedule-panel" id="panel-terca" role="tabpanel" aria-labelledby="tab-terca" tabindex="0" hidden>
+            <table class="schedule-table">
+              <caption>Horário ilustrativo de terça-feira</caption>
+              <thead>
+                <tr><th scope="col">Aula</th><th scope="col">Componente curricular</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row"><span class="period">1ª</span></th><td>Matemática</td></tr>
+                <tr><th scope="row"><span class="period">2ª</span></th><td>Física</td></tr>
+                <tr><th scope="row"><span class="period">3ª</span></th><td>Química</td></tr>
+                <tr class="schedule-break"><th scope="row">Intervalo</th><td>Pausa — horário ilustrativo</td></tr>
+                <tr><th scope="row"><span class="period">4ª</span></th><td>Biologia</td></tr>
+                <tr><th scope="row"><span class="period">5ª</span></th><td>Educação Física</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="schedule-panel" id="panel-quarta" role="tabpanel" aria-labelledby="tab-quarta" tabindex="0" hidden>
+            <table class="schedule-table">
+              <caption>Horário ilustrativo de quarta-feira</caption>
+              <thead>
+                <tr><th scope="col">Aula</th><th scope="col">Componente curricular</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row"><span class="period">1ª</span></th><td>Língua Portuguesa</td></tr>
+                <tr><th scope="row"><span class="period">2ª</span></th><td>Produção Textual</td></tr>
+                <tr><th scope="row"><span class="period">3ª</span></th><td>Informática</td></tr>
+                <tr class="schedule-break"><th scope="row">Intervalo</th><td>Pausa — horário ilustrativo</td></tr>
+                <tr><th scope="row"><span class="period">4ª</span></th><td>Informática</td></tr>
+                <tr><th scope="row"><span class="period">5ª</span></th><td>Arte</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="schedule-panel" id="panel-quinta" role="tabpanel" aria-labelledby="tab-quinta" tabindex="0" hidden>
+            <table class="schedule-table">
+              <caption>Horário ilustrativo de quinta-feira</caption>
+              <thead>
+                <tr><th scope="col">Aula</th><th scope="col">Componente curricular</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row"><span class="period">1ª</span></th><td>Matemática</td></tr>
+                <tr><th scope="row"><span class="period">2ª</span></th><td>História</td></tr>
+                <tr><th scope="row"><span class="period">3ª</span></th><td>Filosofia</td></tr>
+                <tr class="schedule-break"><th scope="row">Intervalo</th><td>Pausa — horário ilustrativo</td></tr>
+                <tr><th scope="row"><span class="period">4ª</span></th><td>Sociologia</td></tr>
+                <tr><th scope="row"><span class="period">5ª</span></th><td>Língua Inglesa</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="schedule-panel" id="panel-sexta" role="tabpanel" aria-labelledby="tab-sexta" tabindex="0" hidden>
+            <table class="schedule-table">
+              <caption>Horário ilustrativo de sexta-feira</caption>
+              <thead>
+                <tr><th scope="col">Aula</th><th scope="col">Componente curricular</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row"><span class="period">1ª</span></th><td>Biologia</td></tr>
+                <tr><th scope="row"><span class="period">2ª</span></th><td>Química</td></tr>
+                <tr><th scope="row"><span class="period">3ª</span></th><td>Física</td></tr>
+                <tr class="schedule-break"><th scope="row">Intervalo</th><td>Pausa — horário ilustrativo</td></tr>
+                <tr><th scope="row"><span class="period">4ª</span></th><td>Projeto de Vida</td></tr>
+                <tr><th scope="row"><span class="period">5ª</span></th><td>Informática</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <p class="schedule-note">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5"></path><path d="M12 8h.01"></path></svg>
+          Nenhum horário, turno ou sala oficial foi informado pela escola. Este painel é apenas uma demonstração visual.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================= SOBRE ============================= -->
+    <section class="view" id="view-sobre" data-view="sobre" aria-labelledby="titulo-sobre" hidden>
+      <header class="page-head">
+        <p class="eyebrow"><span class="eyebrow__mark" aria-hidden="true"></span> Projeto escolar</p>
+        <h1 id="titulo-sobre" tabindex="-1">Sobre</h1>
+        <p>Conheça o desenvolvedor por trás do Abel Conecta e as ideias do projeto.</p>
+      </header>
+
+      <div class="profile-card">
+        <div class="profile-card__decor" aria-hidden="true"></div>
+        <div class="avatar" aria-hidden="true">CD</div>
+        <div class="profile-card__info">
+          <span class="tag tag--soft">Desenvolvedor</span>
+          <h2>Cristian Davi Santos de Freitas</h2>
+          <dl class="info-grid">
+            <div class="info-grid__item">
+              <dt>Turma</dt>
+              <dd>3º ano de Informática</dd>
+            </div>
+            <div class="info-grid__item">
+              <dt>Série</dt>
+              <dd>Ensino Médio</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="about-grid">
+        <article class="panel">
+          <h2>Sobre o Abel Conecta</h2>
+          <p>O Abel Conecta reúne, em uma única interface, os principais pontos de acesso da comunidade escolar: avisos, horários e informações do projeto.</p>
+          <ul class="feature-list">
+            <li>
+              <span class="feature-list__icon" aria-hidden="true">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"></rect><path d="M11 18.5h2"></path></svg>
+              </span>
+              <span><strong>Aparência de aplicativo</strong><small>Navegação por abas e cartões, pensada primeiro para celulares.</small></span>
+            </li>
+            <li>
+              <span class="feature-list__icon" aria-hidden="true">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 .5-8.97A7 7 0 0 0 5.1 11.2 4 4 0 0 0 6 19h11.5Z"></path><path d="M9 15h6"></path></svg>
+              </span>
+              <span><strong>Funciona sem internet</strong><small>Os arquivos essenciais são guardados em cache após a primeira visita.</small></span>
+            </li>
+            <li>
+              <span class="feature-list__icon" aria-hidden="true">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v10"></path><path d="m8 9 4 4 4-4"></path><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"></path></svg>
+              </span>
+              <span><strong>Instalável</strong><small>Pode ser adicionado à tela inicial em navegadores compatíveis.</small></span>
+            </li>
+          </ul>
+        </article>
+
+        <article class="panel">
+          <h2>Tecnologia e privacidade</h2>
+          <p>Desenvolvido com HTML, CSS e JavaScript puros, sem frameworks, e configurado como PWA (Progressive Web App).</p>
+          <ul class="check-list">
+            <li>Sem frameworks e sem bibliotecas externas.</li>
+            <li>Nenhum dado pessoal é coletado.</li>
+            <li>A preferência de tema fica salva apenas no seu navegador.</li>
+            <li>Arquivos essenciais disponíveis offline via service worker.</li>
+          </ul>
+          <div class="tech-tags" role="group" aria-label="Tecnologias utilizadas">
+            <span class="tag tag--outline">HTML5</span>
+            <span class="tag tag--outline">CSS3</span>
+            <span class="tag tag--outline">JavaScript</span>
+            <span class="tag tag--outline">PWA</span>
+          </div>
+        </article>
+      </div>
+
+      <div class="callout callout--transparency" role="note">
+        <span class="callout__icon" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v5c0 5 3.4 8.4 8 10 4.6-1.6 8-5 8-10V6l-8-3Z"></path><path d="m9 12 2 2 4-4"></path></svg>
+        </span>
+        <div>
+          <strong>Transparência</strong>
+          <p>Este é um projeto demonstrativo. Os conteúdos de exemplo não representam comunicados oficiais, e o aplicativo não substitui os canais oficiais da escola.</p>
+        </div>
+      </div>
+
+      <div class="school-line">
+        <img src="./assets/logo-abel.png" alt="" width="52" height="52" loading="lazy" decoding="async">
+        <div>
+          <strong>Escola Estadual Professor Abel Freire Coelho</strong>
+          <span>Abel Conecta · versão 1.0.0</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Abel Conecta · Escola Estadual Professor Abel Freire Coelho</p>
+    <p>Projeto demonstrativo — feito com HTML, CSS e JavaScript.</p>
+  </footer>
+
+  <nav class="tabbar" aria-label="Navegação principal">
+    <a class="tabbar__item" href="#/inicio" data-route="inicio">
+      <span class="tabbar__icon" aria-hidden="true">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M9.5 21v-6h5v6"></path></svg>
+      </span>
+      <span>Início</span>
+    </a>
+    <a class="tabbar__item" href="#/avisos" data-route="avisos">
+      <span class="tabbar__icon" aria-hidden="true">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg>
+      </span>
+      <span>Avisos</span>
+    </a>
+    <a class="tabbar__item" href="#/horarios" data-route="horarios">
+      <span class="tabbar__icon" aria-hidden="true">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path><path d="M8 15h2M14 15h2M8 18h2M14 18h2"></path></svg>
+      </span>
+      <span>Horários</span>
+    </a>
+    <a class="tabbar__item" href="#/sobre" data-route="sobre">
+      <span class="tabbar__icon" aria-hidden="true">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5"></path><path d="M12 8h.01"></path></svg>
+      </span>
+      <span>Sobre</span>
+    </a>
+  </nav>
+
+  <!-- Instruções de instalação / limitações dos navegadores -->
+  <dialog class="dialog" id="install-dialog" aria-labelledby="install-title">
+    <div class="dialog__body">
+      <button class="dialog__close" type="button" data-close-dialog aria-label="Fechar">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+      </button>
+
+      <span class="dialog__icon" aria-hidden="true">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2.5" width="12" height="19" rx="3"></rect><path d="M12 6v8"></path><path d="m8.5 10.5 3.5 3.5 3.5-3.5"></path><path d="M10 18.5h4"></path></svg>
+      </span>
+
+      <h2 id="install-title">Instale o Abel Conecta</h2>
+      <p class="dialog__lead">Adicione o aplicativo à tela inicial para abrir com um toque e usar os conteúdos essenciais mesmo sem internet.</p>
+
+      <div class="install-steps">
+        <div class="install-step">
+          <span class="install-step__badge">Android</span>
+          <p>No Chrome, toque no menu <strong>⋮</strong> e escolha <strong>Instalar aplicativo</strong> ou <strong>Adicionar à tela inicial</strong>.</p>
+        </div>
+        <div class="install-step">
+          <span class="install-step__badge">iPhone / iPad</span>
+          <p>No Safari, toque em <strong>Compartilhar</strong> e depois em <strong>Adicionar à Tela de Início</strong>.</p>
+        </div>
+        <div class="install-step">
+          <span class="install-step__badge">Computador</span>
+          <p>No Chrome ou Edge, use o ícone de instalação na barra de endereço, ou o menu do navegador.</p>
+        </div>
+      </div>
+
+      <p class="fineprint">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5"></path><path d="M12 8h.01"></path></svg>
+        A instalação exige uma conexão segura (HTTPS) ou localhost. A disponibilidade do botão varia conforme o navegador e o sistema. No iPhone, a instalação é feita manualmente pelo Safari.
+      </p>
+
+      <div class="dialog__actions">
+        <button class="button button--ghost" type="button" data-close-dialog>Entendi</button>
+        <button class="button button--primary" type="button" id="dialog-install" hidden>Instalar agora</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="false"></div>
+
+  <script src="./script.js" defer></script>
+</body>
+</html>
